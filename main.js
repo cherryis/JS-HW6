@@ -5,7 +5,7 @@ let selectGender = "";
 
 // define a constructor to create animal objects with 3 parameters
 let AnimalObject = function (pType, pAge, pBreed, pGender, pFee, pUrl) {
-    this.ID = Math.random().toString(16).slice(5);
+    this.ID = Math.random().toString(16).slice(5); // tiny chance could get duplicates!
     this.selectType = pType;
     this.age = pAge;
     this.breed = pBreed;
@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         document.getElementById("breed").value = "";
         document.getElementById("fee").value = "";
         document.getElementById("url").value = "";
-//  $(.myList > th)
     });
     // ------------------ End Add animal --------------------------------------------
 
@@ -64,7 +63,8 @@ function GetArrayPointer(localID) {
 
 // need one for detail page to fill in the infor based on the passed in ID
 $(document).on("pagebeforeshow", "#detail", function (event) {
-    let localParm = localStorage.getItem('parm'); // get the unique key back from the dictionairy
+    // let localParm = localStorage.getItem('parm'); // get the unique key back from the dictionairy
+    let localParm = document.getElementById("IDparmHere").innerHTML;
     let localID = GetArrayPointer(localParm); // map to which array element it is
 
     // next step to avoid bug in jQuery Mobile, force the movie array to be current
@@ -75,7 +75,7 @@ $(document).on("pagebeforeshow", "#detail", function (event) {
     document.getElementById("detailBreed").innerHTML = "The breed is => " + animalArray[localID].breed;
     document.getElementById("detailGender").innerHTML = "The gender is => " + animalArray[localID].selectGender;
     document.getElementById("detailFee").innerHTML = "Adoption fee is => $" + animalArray[localID].fee;
-    document.getElementById("detailUrl").innerHTML = "Current location is =>" + animalArray[localID].url;
+    document.getElementById("detailUrl").innerHTML = animalArray[localID].url;
 });
  
 // end of page before show code *************************************************************************
@@ -109,6 +109,7 @@ function createList() {
         // get that data-parm we added for THIS particular li as we loop thru them
         let parm = this.getAttribute("data-parm");  // passing in the record.Id
         // get our hidden <p> and save THIS ID value in the localStorage "dictionairy"
+        document.getElementById("IDparmHere").innerHTML = parm;
         localStorage.setItem('parm', parm);
         // but also, to get around a "bug" in jQuery Mobile, take a snapshot of the
         // current movie array and save it to localStorage as well.
